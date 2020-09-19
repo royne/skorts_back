@@ -47,7 +47,7 @@ class EscortProfilesController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def escort_profile_params
       params.require(:escort_profile).permit(:user_name, :first_name, :last_name, :profile_photo, :city, 
-        :description, :photos, :price, :schedule, :stars, :verified, :sex, :age, :subscription, :user_id, 
-        :type_subscription_id, :service_ids => [], :location_ids => [], :category_ids => [])
+        :description, :photos, :price, :schedule, :stars, :verified, :sex, :age, :subscription, :phone, 
+        :user_id, :type_subscription_id, :service_ids => [], :location_ids => [], :category_ids => [])
     end
 end

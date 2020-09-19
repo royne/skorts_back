@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       get 'users/current' => 'users#current'
       
       resources :users
+      post 'create_escort', to: 'users#create_escort'
     end
   end
 end

@@ -6,6 +6,10 @@ escort = User.new(username: 'linda', email: 'linda@mail.com', password: '123456'
 escort.add_role(:escort)
 escort.save!
 
+user = User.new(username: 'juan', email: 'juan@mail.com', password: '123456')
+user.add_role(:user)
+user.save!
+
 Category.create(name: 'Economicas')
 Category.create(name: 'A Domicilio')
 Category.create(name: 'A hoteles')

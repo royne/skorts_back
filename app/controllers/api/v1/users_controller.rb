@@ -13,14 +13,33 @@ class Api::V1::UsersController < ApplicationController
     render json: @user
   end
 
-  # POST /users
   def create
     @user = User.new(user_params)
-
+    @user.add_role(:user)
     if @user.save
       render json: @user, status: :created
     else
       render json: @user.errors, status: :unprocessable_entity
+    end
+  end
+
+  def create_escort
+    ActiveRecord::Base.transaction do 
+      phone = params[:user][:phone]
+      if EscortProfile.find_by(phone: phone)
+        render json: { error: 'Celular ya se encuentra registrado'},  status: :unprocessable_entity
+        return
+      end  
+      user = User.new(user_params)
+      user.add_role(:escort)
+      if user.save
+        escort = EscortProfile.new(username: user.username, phone: phone)
+        escort.user = user
+        escort.save
+        render json: user, status: :created
+      else
+        render json: user.errors, status: :unprocessable_entity
+      end
     end
   end
 

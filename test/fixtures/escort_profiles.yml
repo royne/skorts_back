@@ -1,0 +1,39 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  first_namee: MyString
+  last_name: MyString
+  profile_photog: MyString
+  city: 
+  description: MyText
+  photos: 
+  price: 1
+  schedule: MyString
+  stars: 1
+  verified: false
+  sex: 1
+  age: 1
+  subscriptio: false
+  users: one
+  services: one
+  locations: one
+  type_subscriptions: one
+
+two:
+  first_namee: MyString
+  last_name: MyString
+  profile_photog: MyString
+  city: 
+  description: MyText
+  photos: 
+  price: 1
+  schedule: MyString
+  stars: 1
+  verified: false
+  sex: 1
+  age: 1
+  subscriptio: false
+  users: two
+  services: two
+  locations: two
+  type_subscriptions: two

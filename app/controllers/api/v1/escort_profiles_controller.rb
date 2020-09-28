@@ -1,4 +1,4 @@
-class EscortProfilesController < ApplicationController
+class Api::V1::EscortProfilesController < ApplicationController
   before_action :set_escort_profile, only: [:show, :update, :destroy]
 
   # GET /escort_profiles
@@ -26,6 +26,10 @@ class EscortProfilesController < ApplicationController
 
   # PATCH/PUT /escort_profiles/1
   def update
+    @escort_profile.category_ids = params[:categories]
+    @escort_profile.service_ids = params[:services]
+    @escort_profile.location_ids = params[:locations]
+    
     if @escort_profile.update(escort_profile_params)
       render json: @escort_profile
     else
@@ -38,6 +42,19 @@ class EscortProfilesController < ApplicationController
     @escort_profile.destroy
   end
 
+  def escorts_selected
+    services = Service.all
+    locations = Location.all
+    categories = Category.all
+    options = {services: [], locations: [], categories: []}
+    services.map { |x| options[:services].push({label: x.name, value: x.id})}
+    locations.map { |x| options[:locations].push({label: x.name, value: x.id})}
+    categories.map { |x| options[:categories].push({label: x.name, value: x.id})}
+
+    render json: options 
+  end
+  
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_escort_profile
@@ -48,6 +65,20 @@ class EscortProfilesController < ApplicationController
     def escort_profile_params
       params.require(:escort_profile).permit(:user_name, :first_name, :last_name, :profile_photo, :city, 
         :description, :photos, :price, :schedule, :stars, :verified, :sex, :age, :subscription, :phone, 
-        :user_id, :type_subscription_id, :service_ids => [], :location_ids => [], :category_ids => [])
+        :user_id, :type_subscription_id, {:service_ids => [], :location_ids => [], :category_ids => []})
     end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+

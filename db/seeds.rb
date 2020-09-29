@@ -39,4 +39,4 @@ TypeSubscription.create(name: 'Premium', price: 100000)
 
 EscortProfile.create(username: escort.username, first_name: 'juana', last_name: 'gomes', price: 80000, 
                       schedule: '24 horas', sex: 0, age: 25, user_id: escort.id, type_subscription_id: 1,
-                      category_ids: [1,2,3], location_ids: [1,2], service_ids: [1,2])
+                      phone: '3213698547', category_ids: [1,2,3], location_ids: [1,2], service_ids: [1,2])

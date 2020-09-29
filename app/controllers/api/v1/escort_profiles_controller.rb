@@ -26,10 +26,9 @@ class Api::V1::EscortProfilesController < ApplicationController
 
   # PATCH/PUT /escort_profiles/1
   def update
-    @escort_profile.category_ids = params[:categories]
-    @escort_profile.service_ids = params[:services]
-    @escort_profile.location_ids = params[:locations]
-    
+    @escort_profile.category_ids = params[:categories] if params[:categories].present?
+    @escort_profile.service_ids = params[:services] if params[:services].present?
+    @escort_profile.location_ids = params[:locations] if params[:locations].present?
     if @escort_profile.update(escort_profile_params)
       render json: @escort_profile
     else
@@ -63,7 +62,7 @@ class Api::V1::EscortProfilesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def escort_profile_params
-      params.require(:escort_profile).permit(:user_name, :first_name, :last_name, :profile_photo, :city, 
+      params.permit(:user_name, :first_name, :last_name, :profile_photo, :city, 
         :description, :photos, :price, :schedule, :stars, :verified, :sex, :age, :subscription, :phone, 
         :user_id, :type_subscription_id, {:service_ids => [], :location_ids => [], :category_ids => []})
     end

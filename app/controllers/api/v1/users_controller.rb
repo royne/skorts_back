@@ -10,7 +10,11 @@ class Api::V1::UsersController < ApplicationController
 
   # GET /users/1
   def show
-    render json: @user
+    if current_user.has_role(:escort) 
+      render json: current_user 
+    else 
+      render json: @user
+    end
   end
 
   def create

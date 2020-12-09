@@ -5,7 +5,8 @@ class Api::V1::EscortProfilesController < ApplicationController
   def index
     @escort_profiles = EscortProfile.all
 
-    render json: @escort_profiles
+    # render json: @escort_profiles
+    render json: current_user.escort_profile
   end
 
   # GET /escort_profiles/1
@@ -26,12 +27,24 @@ class Api::V1::EscortProfilesController < ApplicationController
 
   # PATCH/PUT /escort_profiles/1
   def update
-    @escort_profile.category_ids = params[:categories]
-    @escort_profile.service_ids = params[:services]
-    @escort_profile.location_ids = params[:locations]
+    @escort_profile.category_ids = params[:categories] if params[:categories].present?
+    @escort_profile.service_ids = params[:services] if params[:services].present?
+    @escort_profile.location_ids = params[:locations] if params[:locations].present?
+    
+    if params[:photos_0].present?
+      array_photos = []
+      params.each { |x| array_photos.push(x[1])}
+      @escort_profile.photos = array_photos
+      if @escort_profile.save
+        render json: @escort_profile, status: :ok
+      else
+        render json: @escort_profile.errors, status: :unprocessable_entity
+      end
+      return
+    end
     
     if @escort_profile.update(escort_profile_params)
-      render json: @escort_profile
+      render json: @escort_profile, status: :ok
     else
       render json: @escort_profile.errors, status: :unprocessable_entity
     end
@@ -54,6 +67,12 @@ class Api::V1::EscortProfilesController < ApplicationController
     render json: options 
   end
   
+  def one_profile
+    if current_user.present? && current_user.has_role?(:escort)    
+      render json: current_user.escort_profile
+    end
+  end
+  
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -63,9 +82,9 @@ class Api::V1::EscortProfilesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def escort_profile_params
-      params.require(:escort_profile).permit(:user_name, :first_name, :last_name, :profile_photo, :city, 
-        :description, :photos, :price, :schedule, :stars, :verified, :sex, :age, :subscription, :phone, 
-        :user_id, :type_subscription_id, {:service_ids => [], :location_ids => [], :category_ids => []})
+      params.permit(:user_name, :first_name, :last_name, :profile_photo, :city, 
+        :description, :price, :schedule, :stars, :verified, :sex, :age, :subscription, :phone, 
+        :user_id, :type_subscription_id, {:photos => [], :service_ids => [], :location_ids => [], :category_ids => []})
     end
 end
 
